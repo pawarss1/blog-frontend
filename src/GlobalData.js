@@ -2,8 +2,16 @@ const homePageTableColumn = ["Name", "Company", "Blog Posts"];
 const homePageTableRow = ["name", "company", "postUrl"];
 const postPageTableRow = ["title"];
 const postPageTableColumn = ["Title", "Post Details"];
-const pageSize = 5;
+const postDetailsPageTableRow = ["name", "body"];
+const postDetailsPageTableColumn = ["Title", "Body"];
+const commentDetailsPageTableColumn = ["Email", "Name", "Body"];
+const commentDetailsPageTableRow = ["email", "name", "body"];
+const pageSize = 3;
 
+exports.commentDetailsPageTableRow = commentDetailsPageTableRow;
+exports.commentDetailsPageTableColumn = commentDetailsPageTableColumn;
+exports.postDetailsPageTableRow = postDetailsPageTableRow;
+exports.postDetailsPageTableColumn = postDetailsPageTableColumn;
 exports.pageSize = pageSize;
 exports.postPageTableRow = postPageTableRow;
 exports.postPageTableColumn = postPageTableColumn;

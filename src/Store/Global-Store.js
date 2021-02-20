@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-import { userDataSlice } from './userDataSlice';
-import { postDataSlice } from './postDataSlice';
+import { commentDataSlice } from './commentDataSlice';
 
 
 const rootReducer = combineReducers({
-    users: userDataSlice.reducer,
-    posts: postDataSlice.reducer,
+    comments: commentDataSlice.reducer,
 })
 export const store = configureStore({
     reducer:rootReducer,

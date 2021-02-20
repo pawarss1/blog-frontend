@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/posts/:userId" exact>
+        <Route path="/userPosts/:userId" exact>
           <PostsPage />
         </Route>
         <Route path="/postDetails/:postId" exact>

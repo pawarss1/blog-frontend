@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { userDataSlice } from "../Store/userDataSlice";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TableDisplay from "./TableDisplay";
@@ -15,7 +13,7 @@ function HomePage() {
   const [tempUserList, setTempUserList] = useState([]);
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const toBeSearchedIn = ["name", "company"];
-  const dispatch = useDispatch();
+  
   useEffect(() => {
     const url = "https://jsonplaceholder.typicode.com/users";
     fetch(url)
@@ -31,11 +29,6 @@ function HomePage() {
         });
         setUserList(storeArr);
         setTempUserList(storeArr);
-        const payload = {
-          userList: storeArr,
-        };
-        //Storing the data on the Redux Store.
-        dispatch(userDataSlice.actions.addNewUserList(payload));
         setSpinnerFlag(false);
       })
       .catch((err) => {

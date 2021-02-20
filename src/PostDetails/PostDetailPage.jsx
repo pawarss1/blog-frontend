@@ -58,6 +58,7 @@ function PostDetailPage() {
           autoClose: 5 * 1000,
         });
         setCommentLoaderFlag(false);
+        history.push("/");
       });
   };
 
@@ -83,6 +84,7 @@ function PostDetailPage() {
         });
         setProcessMsg("");
         setSpinnerFlag(false);
+        history.push("/");
       });
   };
 
@@ -92,11 +94,13 @@ function PostDetailPage() {
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        setProcessMsg("");
+        Object.keys(res).length === 0
+          ? setProcessMsg("No Post found, check the Post Id")
+          : setProcessMsg("");
         setUserId(res.userId);
         setPostInfo(res);
         setSpinnerFlag(false);
-        setProcessMsg("");
       })
       .catch((err) => {
         toast.error("API not working, Please try again after sometime!", {
@@ -105,6 +109,7 @@ function PostDetailPage() {
         });
         setSpinnerFlag(false);
         setProcessMsg("");
+        history.push("/");
       });
   }, []);
   return (
@@ -210,8 +215,8 @@ function PostDetailPage() {
                 </Row>
               </Container>
             </Row>
+            <p style={{ ...theme, fontWeight: "900" }}>{processMsg}</p>
           </Container>
-
           <Container>
             <Row>
               <Col>{displayCommentsFlag && <CommentDetailPage />}</Col>

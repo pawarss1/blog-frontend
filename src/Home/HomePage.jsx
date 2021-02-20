@@ -5,6 +5,8 @@ import TableDisplay from "./TableDisplay";
 import SearchBar from "../SearchBar";
 import { Container, Row, Col } from "react-bootstrap";
 import Loader from "react-loader-spinner";
+import { useHistory } from "react-router-dom";
+
 
 toast.configure();
 
@@ -13,7 +15,7 @@ function HomePage() {
   const [tempUserList, setTempUserList] = useState([]);
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const toBeSearchedIn = ["name", "company"];
-
+  const history = useHistory();
   useEffect(() => {
     const url = "https://jsonplaceholder.typicode.com/users";
     fetch(url)
@@ -37,6 +39,7 @@ function HomePage() {
           autoClose: 5 * 1000,
         });
         setSpinnerFlag(false);
+        history.push("/");
       });
   }, []);
   return (

@@ -8,11 +8,14 @@ import SearchBar from "../SearchBar";
 import UserPostTable from "./UserPostTable";
 import { pageSize } from "../GlobalData";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
 
 toast.configure();
 
 function PostsPage() {
   const { userId } = useParams();
+  const history = useHistory();
   const spinnerType = useRef("Grid");
   const [userPostList, setUserPostList] = useState([]);
   const [tempUserPostList, setTempUserPostList] = useState([]);
@@ -58,6 +61,7 @@ function PostsPage() {
         });
         setSpinnerFlag(false);
         setLoadingMsg("");
+        history.push("/");
       });
   };
   useEffect(() => {
@@ -78,6 +82,7 @@ function PostsPage() {
         });
         setLoadingMsg("");
         setSpinnerFlag(false);
+        history.push("/");
       });
   }, []);
   return (

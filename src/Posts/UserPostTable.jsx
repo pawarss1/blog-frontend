@@ -6,20 +6,26 @@ import { Link } from "react-router-dom";
 import "./PostPage.css";
 
 function UserPostTable(props) {
+  const themeSync = useSelector((globalStore) => globalStore.theme);
+
   return (
     <>
       <Table responsive>
         <thead>
           <tr>
             {postPageTableColumn.map((column, index) => (
-              <th key={`Col${index}`}>{column}</th>
+              <th key={`Col${index}`}>
+                <p style={themeSync}>{column}</p>
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {props.userPostList.map((post, index) => (
             <tr key={`Row${index}`}>
-              <td key={`Data1`}>{post["title"]}</td>
+              <td key={`Data1`}>
+                <p style={themeSync}>{post["title"]}</p>
+              </td>
               <td key={`Data2`}>
                 <Link to={`/postDetails/${post["id"]}`}>Post Details</Link>
               </td>
@@ -29,7 +35,9 @@ function UserPostTable(props) {
       </Table>
       {!props.userPostList.length && (
         <div className="noDataMsg-cls">
-          <p style={{fontWeight:"700"}}>No Posts to display!</p>
+          <p style={{ ...themeSync, fontWeight: "700" }}>
+            No Posts to display!
+          </p>
         </div>
       )}
     </>

@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./Store/Global-Store";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-toggle/style.css" // for ES6 modules
 
 
 ReactDOM.render(

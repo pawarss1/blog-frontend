@@ -7,6 +7,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import SearchBar from "../SearchBar";
 import UserPostTable from "./UserPostTable";
 import { pageSize } from "../GlobalData";
+import { useSelector } from "react-redux";
 
 toast.configure();
 
@@ -21,7 +22,10 @@ function PostsPage() {
   const [lastPageNumber, setLastPageNumber] = useState(0);
   const [mainListLength, setMainListLength] = useState(0);
   const [bufferCurPage, setBufferCurPage] = useState(0);
-  const [loadingMsg, setLoadingMsg] = useState(`Getting Posts of User, with User ID ${userId}`)
+  const [loadingMsg, setLoadingMsg] = useState(
+    `Getting Posts of User, with User ID ${userId}`
+  );
+  const themeSync = useSelector((globalStore) => globalStore.theme);
 
   const limit = pageSize;
   const handleNavigation = (direction) => {
@@ -110,7 +114,7 @@ function PostsPage() {
                   width={200}
                 />
                 <br />
-            <p>{loadingMsg}</p>
+                <p style={themeSync}>{loadingMsg}</p>
                 <br />
               </div>
             ) : (

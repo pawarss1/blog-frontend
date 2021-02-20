@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { commentDataSlice } from "../Store/commentDataSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-loader-spinner";
@@ -26,6 +26,7 @@ function PostDetailPage() {
   const [processMsg, setProcessMsg] = useState("");
 
   const history = useHistory();
+  const theme = useSelector((globalStore) => globalStore.theme);
 
   const getComments = () => {
     setDisplayCommentFlag(!displayCommentsFlag);
@@ -118,7 +119,7 @@ function PostDetailPage() {
             width={200}
           />
           <br />
-          <p>{processMsg}</p>
+          <p style={theme}>{processMsg}</p>
         </div>
       ) : (
         <>
@@ -144,7 +145,7 @@ function PostDetailPage() {
                     <Container>
                       <Row>
                         <Col>
-                          <h1 style={{ marginTop: "6%" }}>Title</h1>
+                          <h1 style={{ ...theme, marginTop: "6%" }}>Title</h1>
                         </Col>
                       </Row>
                       <Row>
@@ -153,7 +154,11 @@ function PostDetailPage() {
                             highlightClassName="highlight-cls"
                             searchWords={searchWordList}
                             autoEscape={true}
-                            className="text-cls"
+                            className={
+                              theme.color === "white"
+                                ? "dark-text-cls"
+                                : "light-text-cls"
+                            }
                             textToHighlight={postInfo.title}
                           />
                         </Col>
@@ -164,7 +169,7 @@ function PostDetailPage() {
                     <Container>
                       <Row>
                         <Col>
-                          <h1 style={{ marginTop: "6%" }}>Body</h1>
+                          <h1 style={{ ...theme, marginTop: "6%" }}>Body</h1>
                         </Col>
                       </Row>
                       <Row>
@@ -173,7 +178,11 @@ function PostDetailPage() {
                             highlightClassName="highlight-cls"
                             searchWords={searchWordList}
                             autoEscape={true}
-                            className="text-cls"
+                            className={
+                              theme.color === "white"
+                                ? "dark-text-cls"
+                                : "light-text-cls"
+                            }
                             textToHighlight={postInfo.body}
                           />
                         </Col>

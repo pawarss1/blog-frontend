@@ -13,7 +13,7 @@ function HomePage() {
   const [tempUserList, setTempUserList] = useState([]);
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const toBeSearchedIn = ["name", "company"];
-  
+
   useEffect(() => {
     const url = "https://jsonplaceholder.typicode.com/users";
     fetch(url)

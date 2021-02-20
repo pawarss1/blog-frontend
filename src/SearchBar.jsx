@@ -9,7 +9,11 @@ function SearchBar(props) {
   const handleSearchValueChange = (value) => {
     if (isNullOrUndefined(value)) {
       props.setList(props.mainList);
-      if(!isNullOrUndefined(props.mainListLength) && !isNullOrUndefined(props.setCurPage) && !isNullOrUndefined(props.bufferCurPage)) {
+      if (
+        !isNullOrUndefined(props.mainListLength) &&
+        !isNullOrUndefined(props.setCurPage) &&
+        !isNullOrUndefined(props.bufferCurPage)
+      ) {
         props.setCurPage(props.bufferCurPage);
         props.setLastPageNumber(Math.ceil(props.mainListLength / pageSize));
       }
@@ -31,10 +35,11 @@ function SearchBar(props) {
     if (
       !isNullOrUndefined(props.setLastPageNumber) &&
       !isNullOrUndefined(props.setCurPage) &&
-      !isNullOrUndefined(props.curPage)
+      !isNullOrUndefined(props.curPage) &&
+      filteredList.length !== pageSize
     ) {
       props.setCurPage(1);
-      props.setLastPageNumber(props.curPage);
+      props.setLastPageNumber(1);
     }
     props.setList(filteredList);
   };
@@ -46,9 +51,6 @@ function SearchBar(props) {
           placeholder={props.placeholder}
           onChange={(evt) => handleSearchValueChange(evt.target.value)}
         />
-        <InputGroup.Prepend>
-          <Button variant="outline-secondary">Search</Button>
-        </InputGroup.Prepend>
       </InputGroup>
     </div>
   );

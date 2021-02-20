@@ -27,6 +27,11 @@ function UserPostTable(props) {
           ))}
         </tbody>
       </Table>
+      {!props.userPostList.length && (
+        <div className="noDataMsg-cls">
+          <p style={{fontWeight:"700"}}>No Posts to display!</p>
+        </div>
+      )}
     </>
   );
 }

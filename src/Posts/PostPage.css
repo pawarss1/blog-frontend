@@ -4,3 +4,6 @@
 .rightBtn {
     float: left;
 }
+.noDataMsg-cls {
+    margin: auto;
+}

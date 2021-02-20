@@ -21,10 +21,12 @@ function PostsPage() {
   const [lastPageNumber, setLastPageNumber] = useState(0);
   const [mainListLength, setMainListLength] = useState(0);
   const [bufferCurPage, setBufferCurPage] = useState(0);
+  const [loadingMsg, setLoadingMsg] = useState(`Getting Posts of User, with User ID ${userId}`)
 
   const limit = pageSize;
   const handleNavigation = (direction) => {
     setSpinnerFlag(true);
+    setLoadingMsg("Getting next set of Posts, Please Wait!");
     spinnerType.current = "Puff";
     const tempPage = curPage;
     if (direction === "next") {
@@ -38,12 +40,12 @@ function PostsPage() {
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        console.log(curPage + " " + lastPageNumber);
         setCurPage(pageNo);
         setBufferCurPage(pageNo);
         setUserPostList(res);
         setTempUserPostList(res);
         setSpinnerFlag(false);
+        setLoadingMsg("");
       })
       .catch((err) => {
         toast.error("API not working, Please try again after sometime!", {
@@ -51,6 +53,7 @@ function PostsPage() {
           autoClose: 5 * 1000,
         });
         setSpinnerFlag(false);
+        setLoadingMsg("");
       });
   };
   useEffect(() => {
@@ -69,6 +72,7 @@ function PostsPage() {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5 * 1000,
         });
+        setLoadingMsg("");
         setSpinnerFlag(false);
       });
   }, []);
@@ -91,6 +95,7 @@ function PostsPage() {
                 curPage={curPage}
                 mainListLength={mainListLength}
                 bufferCurPage={bufferCurPage}
+                lastPageNumber={lastPageNumber}
               />
             </Col>
           </Row>
@@ -104,6 +109,8 @@ function PostsPage() {
                   height={200}
                   width={200}
                 />
+                <br />
+            <p>{loadingMsg}</p>
                 <br />
               </div>
             ) : (

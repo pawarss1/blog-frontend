@@ -7,8 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-loader-spinner";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import SearchBar from "../SearchBar";
+import TextMatcher from "./TextMatcher";
 import CommentDetailPage from "./CommentDetailPage";
+import Highlighter from "react-highlight-words";
+import "./PostDetails.css";
 
 toast.configure();
 
@@ -16,7 +18,7 @@ function PostDetailPage() {
   const { postId } = useParams();
   const dispatch = useDispatch();
   const [postInfo, setPostInfo] = useState({});
-  const [tempPostInfo, setTempPostInfo] = useState({});
+  const [searchWordList, setSearchWordList] = useState([]);
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const [commentLoaderFlag, setCommentLoaderFlag] = useState(false);
   const [displayCommentsFlag, setDisplayCommentFlag] = useState(false);
@@ -65,15 +67,13 @@ function PostDetailPage() {
       method: "DELETE",
     })
       .then(() => {
-        setSpinnerFlag(false);
         setProcessMsg("");
         toast.info("Post Deleted Successfully!", {
           position: toast.POSITION.TOP_CENTER,
-          autoClose: 5 * 1000,
+          autoClose: 2 * 1000,
         });
-        setTimeout(() => {
-            history.push(`/userPosts/${userId}`);
-        }, 1 * 1000)
+        setSpinnerFlag(false);
+        history.push(`/userPosts/${userId}`);
       })
       .catch((err) => {
         toast.error("API not working, Please try again after sometime!", {
@@ -81,6 +81,7 @@ function PostDetailPage() {
           autoClose: 5 * 1000,
         });
         setProcessMsg("");
+        setSpinnerFlag(false);
       });
   };
 
@@ -93,7 +94,6 @@ function PostDetailPage() {
         console.log(res);
         setUserId(res.userId);
         setPostInfo(res);
-        setTempPostInfo(res);
         setSpinnerFlag(false);
         setProcessMsg("");
       })
@@ -121,76 +121,95 @@ function PostDetailPage() {
           <p>{processMsg}</p>
         </div>
       ) : (
-        <Container>
-          <Row>
-            <Col>
-              <br />
-              <SearchBar placeholder="Search within Title or Body" />
-            </Col>
-            <Col>
-              <br />
-              <Button onClick={handleDelete}>Delele Post</Button>
-            </Col>
-          </Row>
-          <Row>
-            <Container>
-              <Row>
-                <Col>
-                  <Container>
-                    <Row>
-                      <Col>
-                        <h1 style={{ marginTop: "6%" }}>Title</h1>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <h3>{postInfo.title}</h3>
-                      </Col>
-                    </Row>
-                  </Container>
-                </Col>
-                <Col>
-                  <Container>
-                    <Row>
-                      <Col>
-                        <h1 style={{ marginTop: "6%" }}>Body</h1>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <h3>{postInfo.body}</h3>
-                      </Col>
-                    </Row>
-                  </Container>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Link>
-                    <div onClick={getComments}>
-                      <h3>Comments</h3>
-                      {commentLoaderFlag && (
-                        <Loader
-                          type="Circles"
-                          color="rgba(228, 225, 225, 0.829)"
-                          height={100}
-                          width={100}
-                        />
-                      )}
-                    </div>
-                  </Link>
-                </Col>
-                <Col></Col>
-              </Row>
-            </Container>
-          </Row>
-        </Container>
+        <>
+          <Container>
+            <Row>
+              <Col>
+                <br />
+                <TextMatcher
+                  placeholder="Search within Title or Body"
+                  setSearchWordList={setSearchWordList}
+                  searchWordList={searchWordList}
+                />
+              </Col>
+              <Col>
+                <br />
+                <Button onClick={handleDelete}>Delele Post</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Container>
+                <Row>
+                  <Col>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <h1 style={{ marginTop: "6%" }}>Title</h1>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Highlighter
+                            highlightClassName="highlight-cls"
+                            searchWords={searchWordList}
+                            autoEscape={true}
+                            className="text-cls"
+                            textToHighlight={postInfo.title}
+                          />
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Col>
+                  <Col>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <h1 style={{ marginTop: "6%" }}>Body</h1>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Highlighter
+                            highlightClassName="highlight-cls"
+                            searchWords={searchWordList}
+                            autoEscape={true}
+                            className="text-cls"
+                            textToHighlight={postInfo.body}
+                          />
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Link>
+                      <div onClick={getComments}>
+                        <h3>Comments</h3>
+                        {commentLoaderFlag && (
+                          <Loader
+                            type="Circles"
+                            color="rgba(228, 225, 225, 0.829)"
+                            height={100}
+                            width={100}
+                          />
+                        )}
+                      </div>
+                    </Link>
+                  </Col>
+                  <Col></Col>
+                </Row>
+              </Container>
+            </Row>
+          </Container>
+
+          <Container>
+            <Row>
+              <Col>{displayCommentsFlag && <CommentDetailPage />}</Col>
+            </Row>
+          </Container>
+        </>
       )}
-      <Container>
-        <Row>
-          <Col>{displayCommentsFlag && <CommentDetailPage />}</Col>
-        </Row>
-      </Container>
     </div>
   );
 }

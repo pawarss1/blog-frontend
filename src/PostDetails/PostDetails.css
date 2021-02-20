@@ -1,0 +1,8 @@
+.text-cls {
+    font-size: 30px;
+}
+.highlight-cls {
+    background-color: white;
+    font-weight: 900;
+    color:rgba(14, 110, 235, 0.609);
+}

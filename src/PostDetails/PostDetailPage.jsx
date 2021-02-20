@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { commentDataSlice } from "../Store/commentDataSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -13,13 +13,17 @@ import CommentDetailPage from "./CommentDetailPage";
 toast.configure();
 
 function PostDetailPage() {
-  const { postId, userId } = useParams();
+  const { postId } = useParams();
   const dispatch = useDispatch();
   const [postInfo, setPostInfo] = useState({});
   const [tempPostInfo, setTempPostInfo] = useState({});
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const [commentLoaderFlag, setCommentLoaderFlag] = useState(false);
   const [displayCommentsFlag, setDisplayCommentFlag] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [processMsg, setProcessMsg] = useState("");
+
+  const history = useHistory();
 
   const getComments = () => {
     setDisplayCommentFlag(!displayCommentsFlag);
@@ -53,15 +57,45 @@ function PostDetailPage() {
         setCommentLoaderFlag(false);
       });
   };
+
+  const handleDelete = () => {
+    setProcessMsg("Deletion in Progress!");
+    setSpinnerFlag(true);
+    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setSpinnerFlag(false);
+        setProcessMsg("");
+        toast.info("Post Deleted Successfully!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5 * 1000,
+        });
+        setTimeout(() => {
+            history.push(`/userPosts/${userId}`);
+        }, 1 * 1000)
+      })
+      .catch((err) => {
+        toast.error("API not working, Please try again after sometime!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5 * 1000,
+        });
+        setProcessMsg("");
+      });
+  };
+
   useEffect(() => {
     const url = `https://jsonplaceholder.typicode.com/posts/${postId}`;
+    setProcessMsg("Fetching Post Details!");
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
+        setUserId(res.userId);
         setPostInfo(res);
         setTempPostInfo(res);
         setSpinnerFlag(false);
+        setProcessMsg("");
       })
       .catch((err) => {
         toast.error("API not working, Please try again after sometime!", {
@@ -69,6 +103,7 @@ function PostDetailPage() {
           autoClose: 5 * 1000,
         });
         setSpinnerFlag(false);
+        setProcessMsg("");
       });
   }, []);
   return (
@@ -82,14 +117,19 @@ function PostDetailPage() {
             height={200}
             width={200}
           />
+          <br />
+          <p>{processMsg}</p>
         </div>
       ) : (
         <Container>
           <Row>
-            <Col></Col>
             <Col>
               <br />
               <SearchBar placeholder="Search within Title or Body" />
+            </Col>
+            <Col>
+              <br />
+              <Button onClick={handleDelete}>Delele Post</Button>
             </Col>
           </Row>
           <Row>

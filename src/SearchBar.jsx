@@ -1,5 +1,6 @@
 import React from "react";
 import { InputGroup, Button, FormControl } from "react-bootstrap";
+import { pageSize } from "./GlobalData";
 
 function SearchBar(props) {
   const isNullOrUndefined = (val) => {
@@ -8,10 +9,14 @@ function SearchBar(props) {
   const handleSearchValueChange = (value) => {
     if (isNullOrUndefined(value)) {
       props.setList(props.mainList);
+      if(!isNullOrUndefined(props.mainListLength) && !isNullOrUndefined(props.setCurPage) && !isNullOrUndefined(props.bufferCurPage)) {
+        props.setCurPage(props.bufferCurPage);
+        props.setLastPageNumber(Math.ceil(props.mainListLength / pageSize));
+      }
       return;
     }
     let filteredList = [];
-    props.list.forEach((iterationObj) => {
+    props.mainList.forEach((iterationObj) => {
       let alreadyInsertedCheckFlag = false;
       props.toBeSearchedIn.forEach((key) => {
         if (
@@ -23,7 +28,14 @@ function SearchBar(props) {
         }
       });
     });
-    console.log(filteredList);
+    if (
+      !isNullOrUndefined(props.setLastPageNumber) &&
+      !isNullOrUndefined(props.setCurPage) &&
+      !isNullOrUndefined(props.curPage)
+    ) {
+      props.setCurPage(1);
+      props.setLastPageNumber(props.curPage);
+    }
     props.setList(filteredList);
   };
   return (

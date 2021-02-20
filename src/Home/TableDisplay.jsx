@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { homePageTableColumn, homePageTableRow } from "../GlobalData";
+import { homePageTableColumn } from "../GlobalData";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 

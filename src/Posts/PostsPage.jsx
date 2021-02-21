@@ -34,12 +34,13 @@ function PostsPage() {
   const limit = pageSize;
   const handleNavigation = (direction) => {
     setSpinnerFlag(true);
-    setLoadingMsg("Getting next set of Posts, Please Wait!");
     spinnerType.current = "Puff";
     const tempPage = curPage;
     if (direction === "next") {
+      setLoadingMsg("Getting next set of Posts, Please Wait!");
       getData(tempPage + 1, lastPageNumber);
     } else {
+      setLoadingMsg("Getting previous set of Posts, Please Wait!");
       getData(tempPage - 1, lastPageNumber);
     }
   };

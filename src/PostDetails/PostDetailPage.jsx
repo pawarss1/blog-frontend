@@ -66,7 +66,7 @@ function PostDetailPage() {
   const handleDelete = () => {
     setProcessMsg("Deletion in Progress!");
     setSpinnerFlag(true);
-    fetch(`${API_URL}}/posts/${postId}`, {
+    fetch(`${API_URL}/posts/${postId}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -85,6 +85,7 @@ function PostDetailPage() {
         history.push(`/userPosts/${userId}`);
       })
       .catch((err) => {
+        console.log(err);
         toast.error("API not working, Please try again after sometime!", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 5 * 1000,

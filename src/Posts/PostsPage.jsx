@@ -9,12 +9,13 @@ import UserPostTable from "./UserPostTable";
 import { pageSize } from "../GlobalData";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { API_URL } from "../GlobalData";
 
 toast.configure();
 
 function PostsPage() {
   const { userId } = useParams();
+  //Getting the User ID as a query param from the URL.
   const history = useHistory();
   const spinnerType = useRef("Grid");
   const [userPostList, setUserPostList] = useState([]);
@@ -43,14 +44,20 @@ function PostsPage() {
     }
   };
   const getData = (pageNo, lastPageNumber) => {
-    const url = `https://jsonplaceholder.typicode.com/posts?userId=${userId}&_page=${pageNo}&_limit=${limit}`;
+    const url = `${API_URL}/posts?userId=${userId}&_page=${pageNo}&_limit=${limit}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        setCurPage(pageNo);
-        setBufferCurPage(pageNo);
-        setUserPostList(res);
-        setTempUserPostList(res);
+        if (res.length === 0) {
+          //If no list is returned, in case of undesired User Id.
+          setCurPage(1);
+          setLastPageNumber(1);
+        } else {
+          setCurPage(pageNo);
+          setBufferCurPage(pageNo);
+          setUserPostList(res);
+          setTempUserPostList(res);
+        }
         setSpinnerFlag(false);
         setLoadingMsg("");
       })
@@ -66,11 +73,12 @@ function PostsPage() {
   };
   useEffect(() => {
     spinnerType.current = "Grid";
-    fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
+    fetch(`${API_URL}/posts?userId=${userId}`)
       .then((res) => res.json())
       .then((res) => {
         setMainListLength(res.length);
         const lastPageNumberSync = Math.ceil(res.length / limit);
+        //Calculation for Total Number of Pages.
         setLastPageNumber(lastPageNumberSync);
         return lastPageNumberSync;
       })
@@ -90,7 +98,10 @@ function PostsPage() {
       <>
         <Container>
           <Row>
-            <Col></Col>
+            <Col>
+              <br />
+              <h4 style={themeSync}>User Id: {userId}</h4>
+            </Col>
             <Col>
               <br />
               <SearchBar

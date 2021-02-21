@@ -1,19 +1,21 @@
 const homePageTableColumn = ["Name", "Company", "Blog Posts"];
-const homePageTableRow = ["name", "company", "postUrl"];
-const postPageTableRow = ["title"];
-const postPageTableColumn = ["Title", "Post Details"];
+const homePageTableRow = ["name", "company"];
+const postPageTableRow = ["id", "title"];
+const postPageTableColumn = ["Post ID", "Title", "Post Details"];
 const postDetailsPageTableRow = ["name", "body"];
 const postDetailsPageTableColumn = ["Title", "Body"];
 const commentDetailsPageTableColumn = ["Email", "Name", "Body"];
 const commentDetailsPageTableRow = ["email", "name", "body"];
-const pageSize = 3;
+const pageSize = 5;
+const API_URL = "https://jsonplaceholder.typicode.com";
 
+exports.API_URL = API_URL;
 exports.commentDetailsPageTableRow = commentDetailsPageTableRow;
 exports.commentDetailsPageTableColumn = commentDetailsPageTableColumn;
 exports.postDetailsPageTableRow = postDetailsPageTableRow;
 exports.postDetailsPageTableColumn = postDetailsPageTableColumn;
-exports.pageSize = pageSize;
 exports.postPageTableRow = postPageTableRow;
 exports.postPageTableColumn = postPageTableColumn;
 exports.homePageTableColumn = homePageTableColumn;
 exports.homePageTableRow = homePageTableRow;
+exports.pageSize = pageSize;

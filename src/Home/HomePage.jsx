@@ -6,18 +6,24 @@ import SearchBar from "../SearchBar";
 import { Container, Row, Col } from "react-bootstrap";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router-dom";
-
+import { API_URL } from "../GlobalData";
+import { useSelector } from "react-redux";
 
 toast.configure();
+//Toast Configuration.
 
 function HomePage() {
+  const theme = useSelector((globalStore) => globalStore.theme);
+  //Using theme from "REDUX STORE" to store the current theme chosen by the user, it can be light or dark.
   const [userList, setUserList] = useState([]);
   const [tempUserList, setTempUserList] = useState([]);
   const [spinnerFlag, setSpinnerFlag] = useState(true);
   const toBeSearchedIn = ["name", "company"];
   const history = useHistory();
-  useEffect(() => {
-    const url = "https://jsonplaceholder.typicode.com/users";
+
+  const getUserData = () => {
+    //Get all the User Data.
+    const url = `${API_URL}/users`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
@@ -26,10 +32,10 @@ function HomePage() {
             id: user.id,
             name: user.name,
             company: user.company.name,
-            postUrl: `http://localhost:3000/posts/${user.id}`,
           };
         });
         setUserList(storeArr);
+        //Temporary list on which the search will take place
         setTempUserList(storeArr);
         setSpinnerFlag(false);
       })
@@ -39,8 +45,13 @@ function HomePage() {
           autoClose: 5 * 1000,
         });
         setSpinnerFlag(false);
+        //If any error occurs, redirect user to the home page, for better UX.
         history.push("/");
       });
+  };
+
+  useEffect(() => {
+    getUserData();
   }, []);
   return (
     <div>
@@ -53,6 +64,8 @@ function HomePage() {
             height={200}
             width={200}
           />
+          <br />
+          <p style={theme}>User Data Loading!</p>
         </div>
       ) : (
         <Container>

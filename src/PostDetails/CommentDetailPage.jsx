@@ -7,6 +7,7 @@ import Table from "react-bootstrap/Table";
 import { useSelector } from "react-redux";
 
 function CommentDetailPage() {
+  //Getting list of Comments from the REDUX-STORE
   const commentListSync = useSelector((globalStore) => globalStore.comments);
   const theme = useSelector((globalStore) => globalStore.theme);
   const [commentList, setCommentList] = useState([]);

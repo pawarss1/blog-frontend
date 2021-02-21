@@ -10,12 +10,14 @@ import { Link } from "react-router-dom";
 import TextMatcher from "./TextMatcher";
 import CommentDetailPage from "./CommentDetailPage";
 import Highlighter from "react-highlight-words";
+import { API_URL } from "../GlobalData";
 import "./PostDetails.css";
 
 toast.configure();
 
 function PostDetailPage() {
   const { postId } = useParams();
+  //Get Post ID from the query parameter of the URL.
   const dispatch = useDispatch();
   const [postInfo, setPostInfo] = useState({});
   const [searchWordList, setSearchWordList] = useState([]);
@@ -31,7 +33,7 @@ function PostDetailPage() {
   const getComments = () => {
     setDisplayCommentFlag(!displayCommentsFlag);
     setCommentLoaderFlag(true);
-    const url = `https://jsonplaceholder.typicode.com/comments?postId=${postId}`;
+    const url = `${API_URL}/comments?postId=${postId}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
@@ -43,7 +45,6 @@ function PostDetailPage() {
             body: comment.body,
           });
         });
-        console.log(commentList);
         const payload = {
           commentList: commentList,
         };
@@ -65,7 +66,7 @@ function PostDetailPage() {
   const handleDelete = () => {
     setProcessMsg("Deletion in Progress!");
     setSpinnerFlag(true);
-    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+    fetch(`${API_URL}}/posts/${postId}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -75,6 +76,12 @@ function PostDetailPage() {
           autoClose: 2 * 1000,
         });
         setSpinnerFlag(false);
+        /*Not practically deleting the data from the frontend
+          Reason Being- When the post is deleted, we are calling a DUMMY DELETE API,
+          but in real world this API will delete the data originally from the backend and then
+          the user is redirected to User posts page, where the initial 
+          server call will be made and it will fetch the updated data from the backend.
+        */
         history.push(`/userPosts/${userId}`);
       })
       .catch((err) => {
@@ -89,12 +96,13 @@ function PostDetailPage() {
   };
 
   useEffect(() => {
-    const url = `https://jsonplaceholder.typicode.com/posts/${postId}`;
+    const url = `${API_URL}/posts/${postId}`;
     setProcessMsg("Fetching Post Details!");
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
         setProcessMsg("");
+        //Checking for empty reponse
         Object.keys(res).length === 0
           ? setProcessMsg("No Post found, check the Post Id")
           : setProcessMsg("");

@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Table from "react-bootstrap/Table";
-import { homePageTableColumn } from "../GlobalData";
+import { homePageTableColumn, homePageTableRow } from "../GlobalData";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function TableDisplay(props) {
   const themeSync = useSelector((globalStore) => globalStore.theme);
-
+  //Using theme from "REDUX STORE" to store the current theme chosen by the user, it can be light or dark.
   return (
     <>
       <Table responsive>
@@ -22,13 +22,14 @@ function TableDisplay(props) {
         <tbody>
           {props.userList.map((user, index) => (
             <tr key={`Row${index}`}>
-              <td key={`Data1`}>
-                <p style={themeSync}>{user["name"]}</p>
-              </td>
-              <td key={`Data2`}>
-                <p style={themeSync}>{user["company"]}</p>
-              </td>
-              <td key={`Data3`}>
+              {homePageTableRow.map((rowKey, innerIndex) => {
+                return (
+                  <td key={`Data${index}${innerIndex}`}>
+                    <p style={themeSync}>{user[rowKey]}</p>
+                  </td>
+                );
+              })}
+              <td key={`Data${index}${homePageTableRow.length}`}>
                 <Link to={`/userPosts/${user["id"]}`}>Blog Posts</Link>
               </td>
             </tr>

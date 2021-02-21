@@ -6,8 +6,9 @@ import PostsPage from "./Posts/PostsPage";
 import PostsDetailPage from "./PostDetails/PostDetailPage";
 import Toggle from "react-toggle";
 import { Container, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { themeSwitchSlice } from "./Store/themeSwitchSlice";
+import RouteNotFound from './RouteNotFound';
 
 function App() {
   const [appStyle, setAppStyle] = useState({
@@ -17,6 +18,7 @@ function App() {
     minHeight: "100vh",
   });
   const dispatch = useDispatch();
+  //This will dispatch a update theme event that will in return update the REDUX STORE with proper theme
   useEffect(() => {
     const textColor = appStyle.backgroundColor === "white" ? "black" : "white";
     const payload = {
@@ -57,8 +59,11 @@ function App() {
         <Route path="/postDetails/:postId" exact>
           <PostsDetailPage />
         </Route>
-        <Route path="/">
+        <Route path="/" exact>
           <HomePage />
+        </Route>
+        <Route>
+          <RouteNotFound />
         </Route>
       </Switch>
     </div>

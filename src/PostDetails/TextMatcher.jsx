@@ -1,5 +1,5 @@
 import React from "react";
-import { InputGroup, Button, FormControl } from "react-bootstrap";
+import { InputGroup, FormControl } from "react-bootstrap";
 
 function TextMatcher(props) {
   const handleChange = (value) => {

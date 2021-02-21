@@ -1,5 +1,5 @@
 import React from "react";
-import { InputGroup, Button, FormControl } from "react-bootstrap";
+import { InputGroup, FormControl } from "react-bootstrap";
 import { pageSize } from "./GlobalData";
 
 function SearchBar(props) {
@@ -7,6 +7,7 @@ function SearchBar(props) {
     return val === null || val === undefined || val === "";
   };
   const handleSearchValueChange = (value) => {
+    //Searching / Filtering Logic
     if (isNullOrUndefined(value)) {
       props.setList(props.mainList);
       if (

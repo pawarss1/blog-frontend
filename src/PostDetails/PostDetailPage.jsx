@@ -25,6 +25,7 @@ function PostDetailPage() {
   const [commentLoaderFlag, setCommentLoaderFlag] = useState(false);
   const [displayCommentsFlag, setDisplayCommentFlag] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [deleteBtnDisableFlag, setDeleteBtnDisable] = useState(false);
   const [processMsg, setProcessMsg] = useState("");
 
   const history = useHistory();
@@ -104,9 +105,13 @@ function PostDetailPage() {
       .then((res) => {
         setProcessMsg("");
         //Checking for empty reponse
-        Object.keys(res).length === 0
-          ? setProcessMsg("No Post found, check the Post Id")
-          : setProcessMsg("");
+        if (Object.keys(res).length === 0) {
+          setProcessMsg("No Post found, check the Post Id");
+          setDeleteBtnDisable(true);
+        } else {
+          setProcessMsg("");
+          setDeleteBtnDisable(false);
+        }
         setUserId(res.userId);
         setPostInfo(res);
         setSpinnerFlag(false);
@@ -149,7 +154,7 @@ function PostDetailPage() {
               </Col>
               <Col>
                 <br />
-                <Button onClick={handleDelete}>Delele Post</Button>
+                <Button onClick={handleDelete} disabled={deleteBtnDisableFlag}>Delele Post</Button>
               </Col>
             </Row>
             <Row>

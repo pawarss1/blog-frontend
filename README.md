@@ -12,4 +12,6 @@
 #### 3. Execute the command npm install to install all the dependencies.
 #### 4. After successfull execution of npm install, execute the command "npm start" to start the development server.
 #### 5. You will automatically be redirected to the browser, an you are good to go!
+
+#### If trying to access the application from heroku and getting "Application Error", try to reload the page, as sometimes there is internal technical problem on Heroku Servers. 
 ## Happy Coding!
